@@ -6,9 +6,7 @@
      :state state
      :methods [[addNamespace [com.ubermensch.ant.clojure.Namespace] void]]))
 
-(defn- -main [] (println "Ah-ha!"))
-
-(defn- -init-task [] (-main) [[] (atom {:namespaces []})])
+(defn- -init-task [] [[] (atom {:namespaces []})])
 
 (defn -execute [this]
   (println @(.state this)))
