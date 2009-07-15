@@ -1,0 +1,88 @@
+<project name="clojure-ant-tasks" default="jar">
+  <property name="src.dir" location="src/main" />
+  <property name="classes.dir" location="classes" />
+  <property name="jar.name" value="clojure-ant-tasks.jar" />
+
+  <path id="project.classpath">
+    <pathelement location="${src.dir}" />
+    <pathelement location="${classes.dir}" />
+    <fileset dir="lib">
+      <include name="**/*.jar" />
+    </fileset>
+  </path>
+
+  <path id="test.classpath">
+    <path refid="project.classpath" />
+    <pathelement location="src/test" />
+  </path>
+
+  <target name="clean" description="Remove generated files">
+    <delete dir="${classes.dir}"/>
+  </target>
+
+  <target name="compile">
+    <mkdir dir="${classes.dir}" />
+    <java classname="clojure.lang.Compile" fork="true"
+          resultproperty="compile.result">
+      <classpath>
+        <path refid="project.classpath" />
+      </classpath>
+      <sysproperty key="clojure.compile.path" value="${classes.dir}" />
+      <arg value="com.ubermensch.ant.clojure" />
+    </java>
+
+    <condition property="compile.failure">
+      <not>
+        <equals arg1="${compile.result}" arg2="0" />
+      </not>
+    </condition>
+
+    <fail if="compile.failure" message="compile failed" />
+  </target>
+
+  <target name="test" depends="compile">
+    <java classname="clojure.main" fork="true" resultproperty="test.result">
+      <classpath>
+        <path refid="project.classpath" />
+        <path refid="test.classpath" />
+      </classpath>
+      <arg value="-e" />
+      <arg value="(require 'com.ubermensch.ant.clojure)
+                  (use 'clojure.contrib.test-is)
+                  (def failed (ref 0)) (declare orig-report)
+                  (binding [orig-report report
+                            report #(do (if (#{:fail :error} (:type %))
+                                            (dosync (commute failed inc)))
+                                        (orig-report %))]
+                    (run-all-tests)
+                    (.println System/out)
+                    (System/exit @failed))" />
+    </java>
+
+    <condition property="test.failure">
+      <not>
+        <equals arg1="${test.result}" arg2="0" />
+      </not>
+    </condition>
+
+    <fail if="test.failure" message="test failed" />
+  </target>
+
+  <target name="launch_ng">
+    <java classname="com.martiansoftware.nailgun.NGServer"
+          fork="true">
+      <classpath>
+        <path refid="project.classpath" />
+      </classpath>
+      <arg value="127.0.0.1" />
+    </java>
+  </target>
+
+  <target name="jar" depends="test">
+    <jar jarfile="${jar.name}" basedir="${classes.dir}">
+      <fileset dir="${src.dir}">
+        <include name="**/*.clj" />
+      </fileset>
+    </jar>
+  </target>
+</project>

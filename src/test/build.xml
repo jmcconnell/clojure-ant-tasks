@@ -1,0 +1,15 @@
+<project name="clojure-ant-tasks-test" default="test">
+  <target name="def-task">
+    <taskdef name="clojure-test"
+      classname="com.ubermensch.ant.clojure.TestTask"
+      classpath="../../classes:../../lib/clojure.jar" />
+  </target>
+
+  <target name="test" depends="def-task">
+    <clojure-test>
+      <namespace>test.ns1</namespace>
+      <namespace>test.ns2</namespace>
+      <namespace>test.ns3</namespace>
+    </clojure-test>
+  </target>
+</project>
