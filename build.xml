@@ -1,6 +1,7 @@
 <project name="clojure-ant-tasks" default="jar">
   <property name="src.dir" location="src/main" />
   <property name="classes.dir" location="classes" />
+  <property name="test.classes.dir" location="${classes.dir}/test" />
   <property name="jar.name" value="clojure-ant-tasks.jar" />
 
   <path id="project.classpath">
@@ -13,6 +14,7 @@
 
   <path id="test.classpath">
     <path refid="project.classpath" />
+    <pathelement location="${test.classes.dir}" />
     <pathelement location="src/test" />
   </path>
 
@@ -20,8 +22,28 @@
     <delete dir="${classes.dir}"/>
   </target>
 
-  <target name="compile">
-    <mkdir dir="${classes.dir}" />
+  <target name="compile-tests">
+    <mkdir dir="${classes.dir}/test" />
+    <java classname="clojure.lang.Compile" fork="true"
+          resultproperty="compile.result">
+      <classpath>
+        <path refid="test.classpath" />
+      </classpath>
+      <sysproperty key="clojure.compile.path" value="${test.classes.dir}" />
+      <arg value="task.test" />
+      <arg value="task.test2" />
+    </java>
+
+    <condition property="compile.failure">
+      <not>
+        <equals arg1="${compile.result}" arg2="0" />
+      </not>
+    </condition>
+
+    <fail if="compile.failure" message="compile failed" />
+  </target>
+
+  <target name="compile" depends="compile-tests">
     <java classname="clojure.lang.Compile" fork="true"
           resultproperty="compile.result">
       <classpath>
@@ -72,7 +94,7 @@
     <java classname="com.martiansoftware.nailgun.NGServer"
           fork="true">
       <classpath>
-        <path refid="project.classpath" />
+        <path refid="test.classpath" />
       </classpath>
       <arg value="127.0.0.1" />
     </java>

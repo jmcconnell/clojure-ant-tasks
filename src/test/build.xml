@@ -2,14 +2,24 @@
   <target name="def-task">
     <taskdef name="clojure-test"
       classname="com.ubermensch.ant.clojure.TestTask"
-      classpath="../../classes:../../lib/clojure.jar" />
+      classpath="../../classes:../../lib/clojure.jar:../../lib/clojure-contrib.jar" />
   </target>
+
+  <path id="test.classpath">
+    <pathelement location="../../classes/test" />
+  </path>
 
   <target name="test" depends="def-task">
     <clojure-test>
-      <namespace>test.ns1</namespace>
-      <namespace>test.ns2</namespace>
-      <namespace>test.ns3</namespace>
+      <classpath>
+        <!--<pathelement location="../../lib/clojure.jar" />-->
+        <pathelement location="../../classes/test" />
+      </classpath>
+      <namespace>clojure.core</namespace>
+      <namespace>clojure.contrib.monads</namespace>
+      <namespace>clojure.xml</namespace>
+      <namespace>task.test</namespace>
+      <namespace>task.test2</namespace>
     </clojure-test>
   </target>
 </project>
