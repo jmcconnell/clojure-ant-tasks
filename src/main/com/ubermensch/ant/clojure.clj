@@ -1,2 +1,2 @@
 (ns com.ubermensch.ant.clojure
-  (:require [com.ubermensch.ant.clojure namespace test-task]))
+  (:require [com.ubermensch.ant.clojure compile-task test-task base-task namespace]))

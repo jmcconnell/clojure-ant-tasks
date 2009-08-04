@@ -25,7 +25,7 @@
   <target name="compile-tests">
     <mkdir dir="${classes.dir}/test" />
     <java classname="clojure.lang.Compile" fork="true"
-          resultproperty="compile.result">
+          resultproperty="test.compile.result">
       <classpath>
         <path refid="test.classpath" />
       </classpath>
@@ -34,13 +34,13 @@
       <arg value="task.test2" />
     </java>
 
-    <condition property="compile.failure">
+    <condition property="test.compile.failure">
       <not>
-        <equals arg1="${compile.result}" arg2="0" />
+        <equals arg1="${test.compile.result}" arg2="0" />
       </not>
     </condition>
 
-    <fail if="compile.failure" message="compile failed" />
+    <fail if="test.compile.failure" message="compile failed" />
   </target>
 
   <target name="compile" depends="compile-tests">
@@ -50,6 +50,8 @@
         <path refid="project.classpath" />
       </classpath>
       <sysproperty key="clojure.compile.path" value="${classes.dir}" />
+      <arg value="com.ubermensch.ant.clojure.namespace" />
+      <arg value="com.ubermensch.ant.clojure.base-task" />
       <arg value="com.ubermensch.ant.clojure" />
     </java>
 
