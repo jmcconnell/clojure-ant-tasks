@@ -3,17 +3,31 @@
     <taskdef name="clojure-test"
       classname="com.ubermensch.ant.clojure.TestTask"
       classpath="../../classes:../../lib/clojure.jar:../../lib/clojure-contrib.jar" />
+    <taskdef name="clojure-compile"
+      classname="com.ubermensch.ant.clojure.CompileTask"
+      classpath="../../classes:../../lib/clojure.jar:../../lib/clojure-contrib.jar" />
   </target>
 
   <path id="test.classpath">
-    <pathelement location="../../classes/test" />
+    <pathelement location="." />
+    <pathelement location="classes" />
   </path>
 
-  <target name="test" depends="def-task">
+  <target name="compile" depends="def-task">
+    <mkdir dir="classes" />
+    <clojure-compile>
+      <classpath>
+        <pathelement location="." />
+        <pathelement location="classes" />
+      </classpath>
+      <namespace>task</namespace>
+    </clojure-compile>
+  </target>
+
+  <target name="test" depends="compile">
     <clojure-test>
       <classpath>
-        <!--<pathelement location="../../lib/clojure.jar" />-->
-        <pathelement location="../../classes/test" />
+        <pathelement location="classes" />
       </classpath>
       <namespace>clojure.core</namespace>
       <namespace>clojure.contrib.monads</namespace>
@@ -21,5 +35,9 @@
       <namespace>task.test</namespace>
       <namespace>task.test2</namespace>
     </clojure-test>
+  </target>
+
+  <target name="clean" description="Remove generated files">
+    <delete dir="classes"/>
   </target>
 </project>

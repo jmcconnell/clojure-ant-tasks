@@ -23,6 +23,7 @@
   </target>
 
   <target name="compile-tests">
+    <!--
     <mkdir dir="${classes.dir}/test" />
     <java classname="clojure.lang.Compile" fork="true"
           resultproperty="test.compile.result">
@@ -41,9 +42,11 @@
     </condition>
 
     <fail if="test.compile.failure" message="compile failed" />
+    -->
   </target>
 
   <target name="compile" depends="compile-tests">
+    <mkdir dir="${classes.dir}" />
     <java classname="clojure.lang.Compile" fork="true"
           resultproperty="compile.result">
       <classpath>
