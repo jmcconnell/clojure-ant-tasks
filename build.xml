@@ -24,6 +24,9 @@
   </target>
 
   <target name="def-tasks">
+    <!-- In a real build file using this library, the classnames would not
+         be in this "bootstrap" package. That is only necessary here to avoid
+         name conflicts with the classes we're compiling. -->
     <taskdef name="compile-clojure"
       classname="com.ubermensch.ant.clojure.bootstrap.CompileTask"
       classpath="antlib/clojure-ant-tasks-bootstrap.jar:lib/clojure.jar:lib/clojure-contrib.jar" />
