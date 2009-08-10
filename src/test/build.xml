@@ -1,5 +1,5 @@
 <project name="clojure-ant-tasks-test" default="test">
-  <target name="def-task">
+  <target name="def-tasks">
     <taskdef name="clojure-test"
       classname="com.ubermensch.ant.clojure.TestTask"
       classpath="../../classes:../../lib/clojure.jar:../../lib/clojure-contrib.jar" />
@@ -13,7 +13,7 @@
     <pathelement location="classes" />
   </path>
 
-  <target name="compile" depends="def-task">
+  <target name="compile" depends="def-tasks">
     <mkdir dir="classes" />
     <clojure-compile>
       <classpath>

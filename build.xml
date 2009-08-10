@@ -19,36 +19,43 @@
   </path>
 
   <target name="clean" description="Remove generated files">
-    <delete dir="${classes.dir}"/>
+    <delete dir="${classes.dir}" />
+    <delete file="${jar.name}" />
   </target>
 
-  <target name="compile-tests">
-    <!--
-    <mkdir dir="${classes.dir}/test" />
-    <java classname="clojure.lang.Compile" fork="true"
-          resultproperty="test.compile.result">
+  <target name="def-tasks">
+    <taskdef name="compile-clojure"
+      classname="com.ubermensch.ant.clojure.bootstrap.CompileTask"
+      classpath="antlib/clojure-ant-tasks-bootstrap.jar:lib/clojure.jar:lib/clojure-contrib.jar" />
+    <taskdef name="test-clojure"
+      classname="com.ubermensch.ant.clojure.bootstrap.TestTask"
+      classpath="antlib/clojure-ant-tasks-bootstrap.jar:lib/clojure.jar:lib/clojure-contrib.jar" />
+  </target>
+
+  <target name="compile" depends="def-tasks">
+    <mkdir dir="${classes.dir}" />
+    <compile-clojure>
       <classpath>
-        <path refid="test.classpath" />
+        <path refid="project.classpath" />
+        <!--
+        <pathelement location="${src.dir}" />
+        <pathelement location="${classes.dir}" />
+        <fileset dir="lib">
+          <include name="**/*.jar" />
+        </fileset>
+        -->
       </classpath>
-      <sysproperty key="clojure.compile.path" value="${test.classes.dir}" />
-      <arg value="task.test" />
-      <arg value="task.test2" />
-    </java>
-
-    <condition property="test.compile.failure">
-      <not>
-        <equals arg1="${test.compile.result}" arg2="0" />
-      </not>
-    </condition>
-
-    <fail if="test.compile.failure" message="compile failed" />
-    -->
+      <namespace>com.ubermensch.ant.clojure.namespace</namespace>
+      <namespace>com.ubermensch.ant.clojure.base-task</namespace>
+      <namespace>com.ubermensch.ant.clojure</namespace>
+    </compile-clojure>
   </target>
 
-  <target name="compile" depends="compile-tests">
+  <!--
+  <target name="compile">
     <mkdir dir="${classes.dir}" />
     <java classname="clojure.lang.Compile" fork="true"
-          resultproperty="compile.result">
+      resultproperty="compile.result">
       <classpath>
         <path refid="project.classpath" />
       </classpath>
@@ -57,7 +64,7 @@
       <arg value="com.ubermensch.ant.clojure.base-task" />
       <arg value="com.ubermensch.ant.clojure" />
     </java>
-
+      
     <condition property="compile.failure">
       <not>
         <equals arg1="${compile.result}" arg2="0" />
@@ -66,6 +73,7 @@
 
     <fail if="compile.failure" message="compile failed" />
   </target>
+  -->
 
   <target name="test" depends="compile">
     <java classname="clojure.main" fork="true" resultproperty="test.result">
