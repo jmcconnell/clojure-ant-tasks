@@ -39,7 +39,7 @@ Then you can use your new task to compile Clojure code with:
       <namespace>com.foo.second.namespace.to.compile</namespace>
     </clojure-compile>
 
-### Compilation
+### Testing
 
 Define the task with ("clojure-test" could be whatever name you like):
 
