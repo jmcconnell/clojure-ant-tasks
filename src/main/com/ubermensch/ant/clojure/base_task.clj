@@ -6,9 +6,12 @@
   (:import [org.apache.tools.ant.types Path]
            [org.apache.tools.ant AntClassLoader]))
 
-(defn initial-state [] [[] (atom {:namespaces []
-                                  :classpath nil
-                                  :classloader (clojure.lang.RT/baseLoader)})])
+(defn initial-state
+  ([] (initial-state {}))
+  ([m] [[] (atom (merge {:namespaces []
+                         :classpath nil
+                         :classloader (clojure.lang.RT/baseLoader)}
+                        m))]))
 
 (defmacro with-state [& body]
   `(let [~'state (.state ~'this)]

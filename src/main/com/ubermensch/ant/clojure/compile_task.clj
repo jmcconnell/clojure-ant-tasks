@@ -2,12 +2,17 @@
   (:gen-class
      :name com.ubermensch.ant.clojure.CompileTask
      :extends com.ubermensch.ant.clojure.base_task
+     :methods [[setCompilePath [String] void]]
      :init init-task
      :state state)
   (:require [com.ubermensch.ant.clojure.base-task :as base])
   (:import java.io.File))
 
-(defn- -init-task [] (base/initial-state))
+(defn- -init-task [] (base/initial-state {:compile-path "classes"}))
+
+(defn -setCompilePath [this path]
+  (base/with-state
+    (swap! state #(assoc % :compile-path path))))
 
 (defn- ns->path [an-ns]
   (.. an-ns (replace \- \_) (replace \. \/)))
@@ -35,7 +40,7 @@
 (defn -execute [this]
   (base/with-classloader
     (try
-      (binding [*compile-path* "classes"]
+      (binding [*compile-path* (:compile-path @state)]
         (println "compiling to" *compile-path*)
         (doseq [an-ns (filter should-be-compiled? (:namespaces @state))]
           (do
