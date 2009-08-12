@@ -12,7 +12,11 @@
   (base/with-classloader
     (try
       (binding [*compile-path* "classes"]
-        (doseq [an-ns (:namespaces @state)] (compile (symbol (.name an-ns)))))
+        (println "compiling to" *compile-path*)
+        (doseq [an-ns (:namespaces @state)]
+          (do
+            (println "  compiling" (.name an-ns))
+            (compile (symbol (.name an-ns))))))
       (catch Exception e
         (throw (org.apache.tools.ant.BuildException.
                  (str "compilation failed: " (.getMessage e))))))))
