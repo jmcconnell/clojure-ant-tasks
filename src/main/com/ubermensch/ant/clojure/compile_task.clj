@@ -9,8 +9,11 @@
 
 (defn- -init-task [] (base/initial-state))
 
+(defn- ns->path [an-ns]
+  (.. an-ns (replace \- \_) (replace \. \/)))
+
 (defn- class-file-name [an-ns]
-  (str an-ns clojure.lang.RT/LOADER_SUFFIX ".class"))
+  (str (ns->path an-ns) clojure.lang.RT/LOADER_SUFFIX ".class"))
 
 (defn- last-modified [file]
   (.lastModified (File. (.toURI file))))
@@ -19,7 +22,7 @@
   (let [an-ns (.name an-ns)
         cl (.getContextClassLoader (Thread/currentThread))
         class-file (.getResource cl (class-file-name an-ns))
-        source-file (.getResource cl (str an-ns ".clj"))]
+        source-file (.getResource cl (str (ns->path an-ns) ".clj"))]
     (if class-file
       ; a class file exists, let's test its age
       (< (last-modified class-file) (last-modified source-file))
