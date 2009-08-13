@@ -21,6 +21,7 @@
         <pathelement location="classes" />
       </classpath>
       <namespace>task</namespace>
+      <fileset dir="." includes="**/*.clj" />
     </clojure-compile>
   </target>
 
@@ -34,6 +35,7 @@
       <namespace>clojure.xml</namespace>
       <namespace>task.test</namespace>
       <namespace>task.test2</namespace>
+      <fileset dir="." includes="**/*.clj" />
     </clojure-test>
   </target>
 

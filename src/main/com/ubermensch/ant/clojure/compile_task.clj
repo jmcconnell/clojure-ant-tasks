@@ -24,8 +24,7 @@
   (.lastModified (File. (.toURI file))))
 
 (defn- class-file-is-old? [an-ns]
-  (let [an-ns (.name an-ns)
-        cl (.getContextClassLoader (Thread/currentThread))
+  (let [cl (.getContextClassLoader (Thread/currentThread))
         class-file (.getResource cl (class-file-name an-ns))
         source-file (.getResource cl (str (ns->path an-ns) ".clj"))]
     (if class-file
@@ -37,15 +36,21 @@
 (defn- should-be-compiled? [an-ns]
   (class-file-is-old? an-ns))
 
+(defn- compile-ns [an-ns]
+  (println "  compiling" an-ns)
+  (compile (symbol an-ns)))
+
 (defn -execute [this]
   (base/with-classloader
     (try
       (binding [*compile-path* (:compile-path @state)]
         (println "compiling to" *compile-path*)
-        (doseq [an-ns (filter should-be-compiled? (:namespaces @state))]
-          (do
-            (println "  compiling" (.name an-ns))
-            (compile (symbol (.name an-ns))))))
+        (doseq [an-ns (filter #(should-be-compiled? (.name %))
+                              (:namespaces @state))]
+          (compile-ns (.name an-ns)))
+        (doseq [an-ns (filter should-be-compiled?
+                              (base/filesets->namespaces (:filesets @state)))]
+          (compile-ns an-ns)))
       (catch Exception e
         (throw (org.apache.tools.ant.BuildException.
                  (str "compilation failed: " (.getMessage e))))))))

@@ -5,7 +5,8 @@
      :init init-task
      :state state)
   (:use clojure.contrib.test-is)
-  (:require [com.ubermensch.ant.clojure.base-task :as base]))
+  (:require [com.ubermensch.ant.clojure.base-task :as base]
+            [clojure.set :as set]))
 
 (def failed (ref 0))
 (declare orig-report)
@@ -14,11 +15,14 @@
 
 (defn -execute [this]
   (base/with-classloader
-    (doseq [an-ns (:namespaces @state)] (require (symbol (.name an-ns))))
-    (binding [orig-report report
-              report #(do (if (#{:fail :error} (:type %))
-                            (dosync (commute failed inc)))
-                        (orig-report %))]
-      (doseq [an-ns (:namespaces @state)] (run-tests (symbol (.name an-ns))))
-      (if (pos? @failed) (throw (org.apache.tools.ant.BuildException.
-                                  (str "tests failed: " @failed)))))))
+    (let [namespaces (set (set/union
+                            (map #(.name %) (:namespaces @state))
+                            (base/filesets->namespaces (:filesets @state))))]
+      (doseq [an-ns namespaces] (require (symbol an-ns)))
+      (binding [orig-report report
+                report #(do (if (#{:fail :error} (:type %))
+                              (dosync (commute failed inc)))
+                          (orig-report %))]
+        (doseq [an-ns namespaces] (run-tests (symbol an-ns)))
+        (if (pos? @failed) (throw (org.apache.tools.ant.BuildException.
+                                    (str "tests failed: " @failed))))))))
