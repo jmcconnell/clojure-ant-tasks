@@ -37,6 +37,7 @@ Then you can use your new task to compile Clojure code with:
       </classpath>
       <namespace>com.foo.first.namespace.to.compile</namespace>
       <namespace>com.foo.second.namespace.to.compile</namespace>
+      <fileset dir="other/clojure/files" includes="**/*.clj" />
     </clojure-compile>
 
 ### Testing
