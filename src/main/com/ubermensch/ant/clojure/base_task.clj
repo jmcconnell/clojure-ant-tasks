@@ -55,7 +55,10 @@
 
 (defn- filename->namespace [filename]
   (get (re-matches #"(.*)\.clj"
-                   (.. filename (replace \_ \-) (replace \/ \.)))
+                   (.. filename
+                     (replace \_ \-)
+                     (replace \/ \.)
+                     (replace \\ \.)))
        1))
 
 (defn- filename-seq [fileset]
