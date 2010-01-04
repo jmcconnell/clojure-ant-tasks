@@ -40,6 +40,13 @@ Then you can use your new task to compile Clojure code with:
       <fileset dir="other/clojure/files" includes="**/*.clj" />
     </clojure-compile>
 
+If you would like to override Clojure's default compile path of "classes", you
+can add a compilepath attribute to your clojure-compile element, such as:
+
+    <clojure-compile compilepath="/non/default/path">
+      ...
+    </clojure-compile>
+
 ### Testing
 
 Define the task with ("clojure-test" could be whatever name you like):

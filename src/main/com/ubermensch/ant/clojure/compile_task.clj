@@ -2,17 +2,27 @@
   (:gen-class
      :name com.ubermensch.ant.clojure.CompileTask
      :extends com.ubermensch.ant.clojure.base_task
-     :methods [[setCompilePath [String] void]]
+     :methods [[setCompilePath [String] void]
+	       [setWarnOnReflection [String] void]]
      :init init-task
      :state state)
   (:require [com.ubermensch.ant.clojure.base-task :as base])
   (:import java.io.File))
 
-(defn- -init-task [] (base/initial-state {:compile-path "classes"}))
+(defn- -init-task [] (base/initial-state {:compile-path "classes"
+					  :warn-on-reflection false}))
 
 (defn -setCompilePath [this path]
   (base/with-state
     (swap! state #(assoc % :compile-path path))))
+
+(defn -setWarnOnReflection [this s]
+  (let [l (.toLowerCase s)
+	b (if (or (= l "yes") (= l "true") (= l "on"))
+	    true
+	    false)]
+    (base/with-state
+     (swap! state #(assoc % :warn-on-reflection b)))))
 
 (defn- ns->path [an-ns]
   (.. an-ns (replace \- \_) (replace \. \/)))
@@ -43,7 +53,8 @@
 (defn -execute [this]
   (base/with-classloader
     (try
-      (binding [*compile-path* (:compile-path @state)]
+      (binding [*compile-path* (:compile-path @state)
+		*warn-on-reflection* (:warn-on-reflection @state)]
         (println "compiling to" *compile-path*)
         (doseq [an-ns (filter #(should-be-compiled? (.name %))
                               (:namespaces @state))]

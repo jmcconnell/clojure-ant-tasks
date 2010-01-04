@@ -15,7 +15,7 @@
 
   <target name="compile" depends="def-tasks">
     <mkdir dir="classes" />
-    <clojure-compile>
+    <clojure-compile warnonreflection="true">
       <classpath>
         <pathelement location="." />
         <pathelement location="classes" />
