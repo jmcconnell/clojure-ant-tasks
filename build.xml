@@ -37,6 +37,11 @@
 
   <target name="compile" depends="def-tasks">
     <mkdir dir="${classes.dir}" />
+
+    <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false">
+      <classpath><path refid="project.classpath" /></classpath>
+    </javac>
+
     <compile-clojure>
       <classpath>
         <path refid="project.classpath" />

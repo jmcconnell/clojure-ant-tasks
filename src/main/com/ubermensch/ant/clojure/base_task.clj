@@ -1,10 +1,9 @@
 (ns com.ubermensch.ant.clojure.base-task
   (:gen-class
-     :extends org.apache.tools.ant.Task
+     :extends workaround.BaseTask1
      :methods [[addNamespace [com.ubermensch.ant.clojure.Namespace] void]
                [createClasspath [] org.apache.tools.ant.types.Path]
                [addFileSet [org.apache.tools.ant.types.FileSet] void]])
-  (:use [clojure.contrib.seq-utils :only [flatten]])
   (:import [org.apache.tools.ant.types Path FileSet]
            [org.apache.tools.ant AntClassLoader]))
 

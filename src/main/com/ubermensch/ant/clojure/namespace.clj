@@ -1,5 +1,6 @@
 (ns com.ubermensch.ant.clojure.namespace
   (:gen-class
+     :extends workaround.BaseObject
      :name com.ubermensch.ant.clojure.Namespace
      :init init
      :state state
