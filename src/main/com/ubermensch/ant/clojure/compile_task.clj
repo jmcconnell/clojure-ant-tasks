@@ -64,4 +64,4 @@
           (compile-ns an-ns)))
       (catch Exception e
         (throw (org.apache.tools.ant.BuildException.
-                 (str "compilation failed: " (.getMessage e))))))))
+                 (str "compilation failed: " (.getMessage e)) e))))))
