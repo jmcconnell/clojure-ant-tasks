@@ -29,10 +29,10 @@
          name conflicts with the classes we're compiling. -->
     <taskdef name="compile-clojure"
       classname="com.ubermensch.ant.clojure.bootstrap.CompileTask"
-      classpath="antlib/clojure-ant-tasks-bootstrap.jar:lib/clojure.jar:lib/clojure-contrib.jar" />
+      classpath="antlib/clojure-ant-tasks-bootstrap.jar:lib/clojure.jar" />
     <taskdef name="test-clojure"
       classname="com.ubermensch.ant.clojure.bootstrap.TestTask"
-      classpath="antlib/clojure-ant-tasks-bootstrap.jar:lib/clojure.jar:lib/clojure-contrib.jar" />
+      classpath="antlib/clojure-ant-tasks-bootstrap.jar:lib/clojure.jar" />
   </target>
 
   <target name="compile" depends="def-tasks">

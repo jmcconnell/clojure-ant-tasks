@@ -2,10 +2,10 @@
   <target name="def-tasks">
     <taskdef name="clojure-test"
       classname="com.ubermensch.ant.clojure.TestTask"
-      classpath="../../classes:../../lib/clojure.jar:../../lib/clojure-contrib.jar" />
+      classpath="../../classes:../../lib/clojure.jar" />
     <taskdef name="clojure-compile"
       classname="com.ubermensch.ant.clojure.CompileTask"
-      classpath="../../classes:../../lib/clojure.jar:../../lib/clojure-contrib.jar" />
+      classpath="../../classes:../../lib/clojure.jar" />
   </target>
 
   <path id="test.classpath">
@@ -31,7 +31,6 @@
         <pathelement location="classes" />
       </classpath>
       <namespace>clojure.core</namespace>
-      <namespace>clojure.contrib.monads</namespace>
       <namespace>clojure.xml</namespace>
       <namespace>task.test</namespace>
       <namespace>task.test2</namespace>

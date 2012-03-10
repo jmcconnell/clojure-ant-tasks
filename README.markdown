@@ -25,7 +25,7 @@ Define the task with ("clojure-compile" could be whatever name you like):
 
     <taskdef name="clojure-compile"
       classname="com.ubermensch.ant.clojure.CompileTask"
-      classpath="lib/clojure-ant-tasks.jar:lib/clojure.jar:lib/clojure-contrib.jar" />
+      classpath="lib/clojure-ant-tasks.jar:lib/clojure.jar" />
 
 Then you can use your new task to compile Clojure code with:
 
@@ -53,7 +53,7 @@ Define the task with ("clojure-test" could be whatever name you like):
 
     <taskdef name="clojure-test"
       classname="com.ubermensch.ant.clojure.TestTask"
-      classpath="lib/clojure-ant-tasks.jar:lib/clojure.jar:lib/clojure-contrib.jar" />
+      classpath="lib/clojure-ant-tasks.jar:lib/clojure.jar" />
 
 Then you can use your new task to test Clojure code with:
 
