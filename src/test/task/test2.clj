@@ -1,5 +1,5 @@
 (ns task.test2
-  (:use [clojure.contrib test-is]))
+  (:use [clojure.test]))
 
 (with-test
   (defn foo [])

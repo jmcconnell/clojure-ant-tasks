@@ -4,7 +4,7 @@
      :extends com.ubermensch.ant.clojure.base_task
      :init init-task
      :state state)
-  (:use clojure.contrib.test-is)
+  (:use [clojure.test :only [report run-tests]])
   (:require [com.ubermensch.ant.clojure.base-task :as base]
             [clojure.set :as set]))
 

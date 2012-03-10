@@ -91,7 +91,7 @@
       </classpath>
       <arg value="-e" />
       <arg value="(require 'com.ubermensch.ant.clojure)
-                  (use 'clojure.contrib.test-is)
+                  (use 'clojure.test)
                   (def failed (ref 0)) (declare orig-report)
                   (binding [orig-report report
                             report #(do (if (#{:fail :error} (:type %))
