@@ -9,7 +9,7 @@
             [clojure.set :as set]))
 
 (def failed (ref 0))
-(declare orig-report)
+(declare ^:dynamic orig-report)
 
 (defn- -init-task [] (base/initial-state))
 
