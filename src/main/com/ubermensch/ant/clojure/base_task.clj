@@ -28,6 +28,7 @@
                                   (.getProject ~'this)
                                   (:classpath @~'state))]
          (try
+           (.setParent cl# (clojure.lang.RT/baseLoader))
            (.setContextClassLoader (Thread/currentThread) cl#)
            ~@body
            (finally
