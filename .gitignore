@@ -1,3 +1,4 @@
 classes
 clojure-ant-tasks.jar
 *.swp
+test
